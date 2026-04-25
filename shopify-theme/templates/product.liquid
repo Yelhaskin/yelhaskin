@@ -1,0 +1,133 @@
+<!-- PRODUCT PAGE -->
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="{{ routes.root_url }}">Accueil</a> ›
+  <a href="{{ product.collections.first.url }}">{{ product.collections.first.title | default: 'Catalogue' }}</a> ›
+  <span>{{ product.title }}</span>
+</div>
+
+<div class="product-layout">
+
+  <!-- Gallery -->
+  <div class="product-gallery">
+    <div class="gallery-main">
+      {% if product.images.size > 0 %}
+        <img id="main-img" src="{{ product.images[0] | img_url: '800x' }}" alt="{{ product.images[0].alt | escape }}">
+      {% else %}
+        <img src="{{ 'placeholder.png' | asset_url }}" alt="{{ product.title }}">
+      {% endif %}
+    </div>
+    {% if product.images.size > 1 %}
+    <div class="gallery-thumbs">
+      {% for image in product.images %}
+        <div class="thumb {% if forloop.first %}active{% endif %}" data-src="{{ image | img_url: '800x' }}">
+          <img src="{{ image | img_url: '150x' }}" alt="{{ image.alt | escape }}">
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Details -->
+  <div class="product-details">
+    <div class="prod-detail-tag">{{ product.type | default: 'Masque LED Professionnel' }}</div>
+    <h1 class="prod-detail-title">{{ product.title }}</h1>
+    <div class="prod-detail-sub">{{ product.metafields.custom.subtitle | default: '7 Longueurs d\'onde · Résultats prouvés' }}</div>
+    <div class="prod-detail-rating">⭐⭐⭐⭐⭐ <strong>4.7</strong> <span style="color:#bbb;">(763 avis)</span></div>
+
+    <!-- Price -->
+    <div class="price-block">
+      {% if product.compare_at_price > product.price %}
+        <span class="price-main">{{ product.price | money }}</span>
+        <span class="price-old">{{ product.compare_at_price | money }}</span>
+        <span class="price-save">-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+      {% else %}
+        <span class="price-main">{{ product.price | money }}</span>
+      {% endif %}
+      <div class="price-sub">✓ Livraison offerte dès 35 €</div>
+    </div>
+
+    <!-- Description short -->
+    <div class="product-desc">{{ product.description }}</div>
+
+    <!-- LED Colors display -->
+    <div style="margin-bottom:20px;">
+      <div class="opt-label">7 Modes LED inclus</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="width:22px;height:22px;border-radius:50%;background:#ff2a1a;display:inline-block;" title="Rouge – Anti-âge"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:#1a50ff;display:inline-block;" title="Bleu – Anti-acné"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:#1ac858;display:inline-block;" title="Vert – Équilibre"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:#f0b818;display:inline-block;" title="Jaune – Détox"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:#9020d8;display:inline-block;" title="Violet – Cicatrices"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:#18c8d0;display:inline-block;" title="Cyan – Énergie"></span>
+        <span style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#eee,#999);display:inline-block;" title="Laser – Taches"></span>
+      </div>
+    </div>
+
+    <!-- Add to Cart Form -->
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+      <div class="opt-label">Quantité</div>
+      <div class="qty-ctrl" style="margin-bottom:22px;">
+        <button type="button" class="qbtn" data-dir="-" onclick="this.closest('.qty-ctrl').querySelector('.qnum').value=Math.max(1,parseInt(this.closest('.qty-ctrl').querySelector('.qnum').value)-1)">−</button>
+        <input class="qnum" type="number" name="quantity" value="1" min="1">
+        <button type="button" class="qbtn" data-dir="+" onclick="this.closest('.qty-ctrl').querySelector('.qnum').value=parseInt(this.closest('.qty-ctrl').querySelector('.qnum').value)+1">+</button>
+      </div>
+
+      <div class="buy-btns">
+        <button type="submit" name="checkout" class="btn-buy-main">Acheter maintenant</button>
+        <button type="submit" class="btn-add-cart">Ajouter au panier</button>
+      </div>
+    {% endform %}
+
+    <!-- Guarantees -->
+    <div class="guarantees">
+      <div class="guarantee">Livraison offerte dès 35 €</div>
+      <div class="guarantee">Retours gratuits sous 30 jours</div>
+      <div class="guarantee">Paiement 100% sécurisé</div>
+      <div class="guarantee">Résultats visibles en 4 semaines</div>
+    </div>
+    <div class="pay-icons">💳 CB · Visa · Mastercard · PayPal · Apple Pay</div>
+
+    <!-- Accordion -->
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-head">Description complète <span class="acc-arrow">▼</span></div>
+        <div class="acc-body">Masque LED thérapeutique 7 couleurs pour usage domestique. Technologie identique aux appareils professionnels de dermatologie. Traitement de 10 minutes pour des résultats visibles.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head">Guide des lumières LED <span class="acc-arrow">▼</span></div>
+        <div class="acc-body">
+          <strong>🔴 Rouge (630nm)</strong> — Anti-âge, rides<br>
+          <strong>🔵 Bleu (415nm)</strong> — Anti-acné, bactéries<br>
+          <strong>🟢 Vert (520nm)</strong> — Équilibre, éclat<br>
+          <strong>🟡 Jaune (590nm)</strong> — Détox, rougeurs<br>
+          <strong>🟣 Violet (390nm)</strong> — Cicatrices<br>
+          <strong>🔵 Cyan (490nm)</strong> — Énergie, hydratation<br>
+          <strong>⚪ Laser (820nm)</strong> — Taches brunes
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head">Mode d'emploi <span class="acc-arrow">▼</span></div>
+        <div class="acc-body">Nettoyer la peau. Appui long pour allumer. Appui court pour changer de couleur. Séance de 10 minutes. 3 à 5 fois par semaine pour de meilleurs résultats.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head">Livraison & Retours <span class="acc-arrow">▼</span></div>
+        <div class="acc-body">Livraison offerte dès 35 €. Expédition sous 24–48h. Retours acceptés sous 30 jours dans l'emballage d'origine.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gallery thumb click
+  document.querySelectorAll('.thumb').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('main-img').src = t.dataset.src;
+    });
+  });
+</script>

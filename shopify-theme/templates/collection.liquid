@@ -1,0 +1,41 @@
+<!-- CATALOGUE / COLLECTION PAGE -->
+<div class="catalogue-hero">
+  <h1>{{ collection.title | default: 'Notre Collection' }}</h1>
+  <p>{{ collection.description | default: 'Découvrez nos masques LED professionnels pour sublimer votre peau.' }}</p>
+</div>
+
+<div class="products-grid">
+  {% for product in collection.products %}
+    <a class="prod-card" href="{{ product.url }}">
+      <div class="prod-img-wrap">
+        {% if product.images.size > 0 %}
+          <img src="{{ product.images[0] | img_url: '600x' }}" alt="{{ product.images[0].alt | escape }}">
+        {% else %}
+          <video autoplay muted loop playsinline>
+            <source src="{{ '0425.mp4' | asset_url }}" type="video/mp4">
+          </video>
+        {% endif %}
+        {% if product.tags contains 'nouveau' %}
+          <span class="prod-badge-new">Nouveau</span>
+        {% endif %}
+        {% if product.compare_at_price > product.price %}
+          <span class="prod-badge-promo">-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+        {% endif %}
+      </div>
+      <div class="prod-info">
+        <div class="prod-tag">{{ product.type | default: 'Masque LED Professionnel' }}</div>
+        <div class="prod-name">{{ product.title }}</div>
+        <div class="prod-desc">{{ product.description | strip_html | truncate: 100 }}</div>
+        <div class="prod-price-row">
+          <span class="prod-price">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="prod-old">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+        <button class="prod-btn">Voir le produit</button>
+      </div>
+    </a>
+  {% else %}
+    <p style="text-align:center;padding:60px;color:#999;">Aucun produit disponible pour le moment.</p>
+  {% endfor %}
+</div>
